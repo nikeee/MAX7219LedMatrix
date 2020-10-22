@@ -17,7 +17,7 @@ LedMatrix::LedMatrix(byte numberOfDevices, byte slaveSelectPin) {
  */
 void LedMatrix::init() {
     pinMode(mySlaveSelectPin, OUTPUT);
-    
+
     SPI.begin ();
     SPI.setDataMode(SPI_MODE0);
     SPI.setClockDivider(SPI_CLOCK_DIV128);
@@ -33,7 +33,7 @@ void LedMatrix::init() {
 void LedMatrix::sendByte (const byte device, const byte reg, const byte data) {
     int offset=device;
     int maxbytes=myNumberOfDevices;
-    
+
     for(int i=0;i<maxbytes;i++) {
         spidata[i] = (byte)0;
         spiregister[i] = (byte)0;
@@ -49,7 +49,7 @@ void LedMatrix::sendByte (const byte device, const byte reg, const byte data) {
         SPI.transfer (spidata[i]);
     }
     digitalWrite (mySlaveSelectPin, HIGH);
-    
+
 }
 
 void LedMatrix::sendByte (const byte reg, const byte data) {
@@ -86,14 +86,14 @@ void LedMatrix::calculateTextAlignmentOffset() {
             myTextAlignmentOffset = - myText.length() * myCharWidth;
             break;
     }
-    
+
 }
 
 void LedMatrix::clear() {
     for (byte col = 0; col < myNumberOfDevices * 8; col++) {
         cols[col] = 0;
     }
-    
+
 }
 
 void LedMatrix::commit() {
@@ -103,7 +103,7 @@ void LedMatrix::commit() {
             SPI.transfer(deviceColumnIndex + 1);
             SPI.transfer(cols[deviceIndex * 8 + deviceColumnIndex]);
         }
-        digitalWrite(mySlaveSelectPin, HIGH);    
+        digitalWrite(mySlaveSelectPin, HIGH);
     }
 }
 
@@ -166,6 +166,6 @@ void LedMatrix::setColumn(int column, byte value) {
     cols[column] = value;
 }
 
-void LedMatrix::setPixel(byte x, byte y) {
-    bitWrite(cols[x], y, true);
+void LedMatrix::setPixel(byte x, byte y, bool value) {
+    bitWrite(cols[x], y, value);
 }
