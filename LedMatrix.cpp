@@ -148,12 +148,12 @@ void LedMatrix::oscillateText() {
 void LedMatrix::drawText() {
     char letter;
     int position = 0;
-    for (int i = 0; i < myText.length(); i++) {
+    for (unsigned int i = 0; i < myText.length(); i++) {
         letter = myText.charAt(i);
         for (byte col = 0; col < 8; col++) {
             position = i * myCharWidth + col + myTextOffset + myTextAlignmentOffset;
             if (position >= 0 && position < myNumberOfDevices * 8) {
-                setColumn(position, pgm_read_byte (&cp437_font [letter] [col]));
+                setColumn(position, pgm_read_byte (&cp437_font [(size_t)letter] [col]));
             }
         }
     }
